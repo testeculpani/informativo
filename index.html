@@ -107,6 +107,7 @@
     .panel-title span{
       font-size: 12px;
       color: var(--muted);
+      display:none; /* removido */
     }
 
     .list{
@@ -143,7 +144,7 @@
     .text{
       font-size: 14px;
       line-height: 1.35;
-      white-space: pre-wrap; /* permite quebrar linha se você quiser */
+      white-space: pre-wrap;
     }
 
     .empty{
@@ -158,11 +159,6 @@
       padding: 0 16px 24px;
       color: var(--muted);
       font-size: 12px;
-    }
-
-    @media (max-width: 560px){
-      .topbar{ padding: 12px 14px; }
-      .wrap{ padding: 14px; }
     }
   </style>
 </head>
@@ -183,24 +179,20 @@
       <div class="panel-head">
         <div class="panel-title">
           <strong>Mural de avisos</strong>
-          <span>Edite o conteúdo direto no código (lista ITENS).</span>
         </div>
       </div>
 
       <div class="list" id="list"></div>
       <div class="empty" id="empty" style="display:none;">Sem informações no momento.</div>
     </main>
-
-    <footer>
-      Dica: para atualizar, edite a lista <b>ITENS</b> e (se quiser) a <b>ULTIMA_ATUALIZACAO</b>.
-    </footer>
   </div>
 
   <script>
     /********************************************************
      * ✏️ EDITAR AQUI
-     * Escreva cada informação como UMA LINHA DE TEXTO
+     * Atualizado (texto livre) + linhas do mural
      ********************************************************/
+    const ATUALIZADO = "28/01/2026 15:30"; // <-- você edita aqui
     const ITENS = [
       "GR0883 - CARRINHO SEM GAVETA fora de linha.",
       "GA811 - PEGADOR PINÇA no aguardo do Contêiner.",
@@ -211,9 +203,6 @@
       "GR0864 - No aguardo do Contêiner."
     ];
 
-    // (opcional) coloque manualmente quando atualizar:
-    const ULTIMA_ATUALIZACAO = ""; // ex: "28/01/2026 15:20"
-
     const elList = document.getElementById("list");
     const elCount = document.getElementById("count");
     const elUpdated = document.getElementById("updated");
@@ -222,12 +211,13 @@
     function render(items){
       elList.innerHTML = "";
 
-      if(!items || items.length === 0){
+      const total = (items && items.length) ? items.length : 0;
+      elCount.textContent = `${total} itens`;
+
+      if(total === 0){
         elEmpty.style.display = "block";
-        elCount.textContent = "0 itens";
         return;
       }
-
       elEmpty.style.display = "none";
 
       items.forEach(texto => {
@@ -245,19 +235,10 @@
         row.appendChild(txt);
         elList.appendChild(row);
       });
-
-      elCount.textContent = `${items.length} item${items.length === 1 ? "" : "s"}`;
     }
 
-    // Data no topo
-    const now = new Date();
-    const dd = String(now.getDate()).padStart(2,"0");
-    const mm = String(now.getMonth()+1).padStart(2,"0");
-    const yyyy = now.getFullYear();
-    const hh = String(now.getHours()).padStart(2,"0");
-    const mi = String(now.getMinutes()).padStart(2,"0");
-    const label = ULTIMA_ATUALIZACAO ? ULTIMA_ATUALIZACAO : `${dd}/${mm}/${yyyy} ${hh}:${mi}`;
-    elUpdated.textContent = `Atualizado: ${label}`;
+    // Atualizado: sempre do campo ATUALIZADO (sem automático)
+    elUpdated.textContent = `Atualizado: ${ATUALIZADO || "-"}`;
 
     render(ITENS);
   </script>
