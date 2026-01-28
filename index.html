@@ -5,76 +5,196 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Informativo Grilazer</title>
   <style>
+    :root{
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e5e7eb;
+      --shadow: 0 10px 30px rgba(2, 6, 23, .06);
+    }
+
+    *{ box-sizing:border-box; }
+
     body{
       margin:0;
-      font-family: Arial, Helvetica, sans-serif;
-      background:#f4f4f6;
-      color:#111;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 500px at 15% -10%, rgba(56,189,248,.25), transparent 60%),
+        radial-gradient(900px 450px at 85% 0%, rgba(99,102,241,.18), transparent 55%),
+        var(--bg);
+      color: var(--text);
     }
+
+    .wrap{ max-width: 980px; margin: 0 auto; padding: 18px 16px; }
+
     header{
-      background:#fff;
-      border-bottom:1px solid #ddd;
-      padding:12px 14px;
       position: sticky;
       top: 0;
+      z-index: 10;
+      background: rgba(246,247,251,.82);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(229,231,235,.9);
     }
-    h1{margin:0; font-size:18px}
-    .sub{
-      margin-top:6px;
+
+    .topbar{
       display:flex;
-      gap:10px;
-      flex-wrap:wrap;
       align-items:center;
+      justify-content:space-between;
+      gap: 14px;
+      padding: 14px 16px;
+      max-width: 980px;
+      margin: 0 auto;
     }
-    input{
-      flex:1;
-      min-width:220px;
-      padding:10px 12px;
-      border:1px solid #ddd;
-      border-radius:8px;
-      outline:none;
-      background:#fff;
-      font-size:14px;
+
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap: 2px;
     }
-    .count{
-      font-size:12px;
-      color:#555;
-      background:#fff;
-      border:1px solid #ddd;
-      padding:8px 10px;
-      border-radius:999px;
-      white-space:nowrap;
+
+    h1{
+      margin:0;
+      font-size: 18px;
+      letter-spacing: .2px;
     }
-    main{
-      padding:14px;
-      max-width:900px;
-      margin:0 auto;
+
+    .meta{
+      font-size: 12px;
+      color: var(--muted);
     }
+
+    .badge{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      background: rgba(255,255,255,.85);
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      border-radius: 999px;
+      box-shadow: 0 8px 18px rgba(2, 6, 23, .04);
+      white-space: nowrap;
+    }
+
+    main .panel{
+      background: rgba(255,255,255,.7);
+      border: 1px solid rgba(229,231,235,.9);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-head{
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(229,231,235,.9);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      background: linear-gradient(to right, rgba(255,255,255,.95), rgba(255,255,255,.7));
+    }
+
+    .panel-title{
+      display:flex;
+      flex-direction:column;
+      gap: 2px;
+    }
+    .panel-title strong{
+      font-size: 14px;
+    }
+    .panel-title span{
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .list{
+      padding: 8px;
+      display: grid;
+      gap: 10px;
+    }
+
     .item{
-      background:#fff;
-      border:1px solid #ddd;
-      border-radius:10px;
-      padding:12px 14px;
-      margin-bottom:10px;
-      font-size:14px;
-      line-height:1.35;
-      white-space: pre-wrap; /* mantém quebra de linha se você quiser */
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      transition: transform .08s ease, box-shadow .08s ease;
+    }
+    .item:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(2, 6, 23, .06);
+    }
+
+    .dot{
+      width: 10px;
+      height: 10px;
+      margin-top: 4px;
+      border-radius: 999px;
+      background: #38bdf8;
+      flex: 0 0 10px;
+      box-shadow: 0 0 0 4px rgba(56,189,248,.18);
+    }
+
+    .text{
+      font-size: 14px;
+      line-height: 1.35;
+      white-space: pre-wrap; /* permite quebrar linha se você quiser */
+    }
+
+    .empty{
+      padding: 18px 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    footer{
+      max-width: 980px;
+      margin: 12px auto 0;
+      padding: 0 16px 24px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 560px){
+      .topbar{ padding: 12px 14px; }
+      .wrap{ padding: 14px; }
     }
   </style>
 </head>
 
 <body>
   <header>
-    <h1>Informativo Grilazer</h1>
-    <div class="sub">
-      <input id="q" placeholder="Pesquisar (ex: GA501, contêiner, fora de linha)..." />
-      <div class="count" id="count">0 itens</div>
+    <div class="topbar">
+      <div class="brand">
+        <h1>Informativo Grilazer</h1>
+        <div class="meta" id="updated"></div>
+      </div>
+      <div class="badge" id="count">0 itens</div>
     </div>
   </header>
 
-  <main>
-    <div id="list"></div>
-  </main>
+  <div class="wrap">
+    <main class="panel">
+      <div class="panel-head">
+        <div class="panel-title">
+          <strong>Mural de avisos</strong>
+          <span>Edite o conteúdo direto no código (lista ITENS).</span>
+        </div>
+      </div>
+
+      <div class="list" id="list"></div>
+      <div class="empty" id="empty" style="display:none;">Sem informações no momento.</div>
+    </main>
+
+    <footer>
+      Dica: para atualizar, edite a lista <b>ITENS</b> e (se quiser) a <b>ULTIMA_ATUALIZACAO</b>.
+    </footer>
+  </div>
 
   <script>
     /********************************************************
@@ -86,40 +206,59 @@
       "GA811 - PEGADOR PINÇA no aguardo do Contêiner.",
       "GR0853 - PEGADOR DISSOLE fora de linha.",
       "GA501 - FACA 6\" sem estoque, e sem previsão de chegada.",
-      "GA503 - FACA 8\" No aguardo do Contêiner",
+      "GA503 - FACA 8\" no aguardo do Contêiner.",
       "TC3920 - Sem estoque, previsão dia 15/02.",
-      "GR0864 - No aguardo do Contêiner"
+      "GR0864 - No aguardo do Contêiner."
     ];
+
+    // (opcional) coloque manualmente quando atualizar:
+    const ULTIMA_ATUALIZACAO = ""; // ex: "28/01/2026 15:20"
 
     const elList = document.getElementById("list");
     const elCount = document.getElementById("count");
-    const elQ = document.getElementById("q");
-
-    function normalize(s){
-      return (s || "")
-        .toString()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase();
-    }
+    const elUpdated = document.getElementById("updated");
+    const elEmpty = document.getElementById("empty");
 
     function render(items){
       elList.innerHTML = "";
+
+      if(!items || items.length === 0){
+        elEmpty.style.display = "block";
+        elCount.textContent = "0 itens";
+        return;
+      }
+
+      elEmpty.style.display = "none";
+
       items.forEach(texto => {
-        const div = document.createElement("div");
-        div.className = "item";
-        div.textContent = texto;
-        elList.appendChild(div);
+        const row = document.createElement("div");
+        row.className = "item";
+
+        const dot = document.createElement("div");
+        dot.className = "dot";
+
+        const txt = document.createElement("div");
+        txt.className = "text";
+        txt.textContent = texto;
+
+        row.appendChild(dot);
+        row.appendChild(txt);
+        elList.appendChild(row);
       });
+
       elCount.textContent = `${items.length} item${items.length === 1 ? "" : "s"}`;
     }
 
-    function filtrar(){
-      const q = normalize(elQ.value);
-      if(!q) return render(ITENS);
-      render(ITENS.filter(t => normalize(t).includes(q)));
-    }
+    // Data no topo
+    const now = new Date();
+    const dd = String(now.getDate()).padStart(2,"0");
+    const mm = String(now.getMonth()+1).padStart(2,"0");
+    const yyyy = now.getFullYear();
+    const hh = String(now.getHours()).padStart(2,"0");
+    const mi = String(now.getMinutes()).padStart(2,"0");
+    const label = ULTIMA_ATUALIZACAO ? ULTIMA_ATUALIZACAO : `${dd}/${mm}/${yyyy} ${hh}:${mi}`;
+    elUpdated.textContent = `Atualizado: ${label}`;
 
-    elQ.addEventListener("input", filtrar);
     render(ITENS);
   </script>
 </body>
