@@ -1,42 +1,126 @@
-<script>
-  const ITENS = [
-    "GR0883 - CARRINHO SEM GAVETA fora de linha.",
-    "GA811 - PEGADOR PINÇA no aguardo do contêiner.",
-    "GR0853 - PEGADOR DISSOLE fora de linha.",
-    "GA501 - FACA 6\" sem estoque, e sem previsão de chegada.",
-    "GA503 - FACA 8\" no aguardo do contêiner.",
-    "TC3920 - Sem estoque, previsão dia 15/02.",
-    "GR0864 - No aguardo do contêiner."
-  ];
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Informativo Grilazer</title>
+  <style>
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:#f4f4f6;
+      color:#111;
+    }
+    header{
+      background:#fff;
+      border-bottom:1px solid #ddd;
+      padding:12px 14px;
+      position: sticky;
+      top: 0;
+    }
+    h1{margin:0; font-size:18px}
+    .sub{
+      margin-top:6px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    input{
+      flex:1;
+      min-width:220px;
+      padding:10px 12px;
+      border:1px solid #ddd;
+      border-radius:8px;
+      outline:none;
+      background:#fff;
+      font-size:14px;
+    }
+    .count{
+      font-size:12px;
+      color:#555;
+      background:#fff;
+      border:1px solid #ddd;
+      padding:8px 10px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+    main{
+      padding:14px;
+      max-width:900px;
+      margin:0 auto;
+    }
+    .item{
+      background:#fff;
+      border:1px solid #ddd;
+      border-radius:10px;
+      padding:12px 14px;
+      margin-bottom:10px;
+      font-size:14px;
+      line-height:1.35;
+      white-space: pre-wrap; /* mantém quebra de linha se você quiser */
+    }
+  </style>
+</head>
 
-  const elList = document.getElementById("list");
-  const elCount = document.getElementById("count");
-  const elQ = document.getElementById("q");
+<body>
+  <header>
+    <h1>Informativo Grilazer</h1>
+    <div class="sub">
+      <input id="q" placeholder="Pesquisar (ex: GA501, contêiner, fora de linha)..." />
+      <div class="count" id="count">0 itens</div>
+    </div>
+  </header>
 
-  function normalize(s){
-    return (s || "")
-      .toString()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase();
-  }
+  <main>
+    <div id="list"></div>
+  </main>
 
-  function render(items){
-    elList.innerHTML = "";
-    items.forEach(texto => {
-      const row = document.createElement("div");
-      row.className = "item";
-      row.textContent = texto;
-      elList.appendChild(row);
-    });
-    elCount.textContent = `${items.length} item${items.length === 1 ? "" : "s"}`;
-  }
+  <script>
+    /********************************************************
+     * ✏️ EDITAR AQUI
+     * Escreva cada informação como UMA LINHA DE TEXTO
+     ********************************************************/
+    const ITENS = [
+      "GR0883 - CARRINHO SEM GAVETA fora de linha.",
+      "GA811 - PEGADOR PINÇA no aguardo do Contêiner.",
+      "GR0853 - PEGADOR DISSOLE fora de linha.",
+      "GA501 - FACA 6\" sem estoque, e sem previsão de chegada.",
+      "GA503 - FACA 8\" No aguardo do Contêiner",
+      "TC3920 - Sem estoque, previsão dia 15/02.",
+      "GR0864 - No aguardo do Contêiner"
+    ];
 
-  function applyFilter(){
-    const q = normalize(elQ.value);
-    if(!q){ render(ITENS); return; }
-    render(ITENS.filter(t => normalize(t).includes(q)));
-  }
+    const elList = document.getElementById("list");
+    const elCount = document.getElementById("count");
+    const elQ = document.getElementById("q");
 
-  elQ.addEventListener("input", applyFilter);
-  render(ITENS);
-</script>
+    function normalize(s){
+      return (s || "")
+        .toString()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+    }
+
+    function render(items){
+      elList.innerHTML = "";
+      items.forEach(texto => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.textContent = texto;
+        elList.appendChild(div);
+      });
+      elCount.textContent = `${items.length} item${items.length === 1 ? "" : "s"}`;
+    }
+
+    function filtrar(){
+      const q = normalize(elQ.value);
+      if(!q) return render(ITENS);
+      render(ITENS.filter(t => normalize(t).includes(q)));
+    }
+
+    elQ.addEventListener("input", filtrar);
+    render(ITENS);
+  </script>
+</body>
+</html>
